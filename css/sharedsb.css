@@ -1,0 +1,64 @@
+@font-face {
+  font-family: Rubik;
+  src: url(../fonts/Rubik.ttf);
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Regular.ttf);
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #c5c5c5;
+}
+
+.main-sidebar {
+  height: 1000vh;
+  width: 200px;
+  font-family: rubik, sans-serif;
+  position: fixed;
+  background-color: #292929;
+}
+
+.admin-panel {
+  margin: 0;
+  font-family: poppins, sans-serif;
+  font-size: 25px;
+  text-align: center;
+  padding: 20px 0px;
+  border-bottom: 2px solid #121212;
+  color: #bbbebd;
+  background-color: #17191a;
+}
+
+td a {
+  color: #bbbebd;
+  text-decoration: none;
+}
+
+td i {
+  color: #c5c5c5;
+  margin: 14px;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.active {
+  background-color: #2e5a6e;
+}
+
+table tr:hover:not(.active) {
+  background-color: rgba(46, 90, 110, 0.3);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td {
+  padding: 10px 0;
+}

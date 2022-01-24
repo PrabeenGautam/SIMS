@@ -1,0 +1,100 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Regular.ttf);
+}
+
+#email {
+  cursor: not-allowed;
+  padding-left: 10px;
+}
+
+input {
+  outline: none;
+  padding: 4px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid silver;
+}
+
+input:focus {
+  border-color: black;
+}
+
+input:hover:not(:focus, #email) {
+  border-color: brown;
+}
+
+#currentPass {
+  margin-left: 63px;
+}
+
+#newPass {
+  margin-left: 96px;
+}
+
+#confirmPass {
+  margin-left: 10px;
+}
+
+fieldset {
+  width: 700px;
+  margin: 30px;
+}
+
+legend {
+  font-size: 30px;
+}
+
+.data {
+  margin: 20px 40px;
+}
+
+label {
+  font-size: 20px;
+}
+
+span {
+  color: #7a797e;
+  font-size: 14px;
+}
+
+.button {
+  margin: 2px 40px;
+  font-size: 20px;
+  color: white;
+  background-color: cadetblue;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 25px;
+  text-align: center;
+  cursor: pointer;
+  font-family: sans-serif;
+}
+
+.button:hover {
+  background-color: teal;
+}
+
+.message {
+  color: #a94442;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.required {
+  color: #a94442;
+  font-size: 11px;
+  font-weight: italic;
+  padding-left: 10px;
+}
+
+#currentPassword,
+#newPassword,
+#confirmPassword {
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+}

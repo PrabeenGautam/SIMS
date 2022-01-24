@@ -1,0 +1,111 @@
+@font-face {
+  font-family: Roboto;
+  src: url(../fonts/Roboto-Black.ttf);
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Regular.ttf);
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #4158d0;
+  background-image: linear-gradient(130deg, #28313b, #485461);
+  height: 100vh;
+  font-family: verdana, roboto;
+}
+
+form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background-color: #f2f2f2;
+  width: 20rem;
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  height: 25rem;
+}
+
+form h1 {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid silver;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  margin: 0px 60px 20px;
+  text-align: center;
+  border-bottom: 2px solid silver;
+  padding: 0;
+}
+
+.input-field:hover {
+  border-bottom-color: black;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  padding: 9px 0 2px 2px;
+  width: 12rem;
+  background-color: #f2f2f2;
+  font-size: 15px;
+  font-family: verdana, roboto;
+}
+
+.button {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: #4158d0;
+  color: white;
+  width: 7rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 20px;
+  padding: 9px;
+  transition: all 0.5s;
+}
+
+.button:hover {
+  background-color: blueviolet;
+}
+
+h6 {
+  margin-top: 40px;
+  border-top: 1px solid silver;
+  text-align: center;
+  color: red;
+  font-size: 14px;
+  padding-top: 10px;
+}
+
+::selection {
+  color: blueviolet;
+}
+
+.message {
+  color: #a94442;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+}
+
+span {
+  color: #7a797e;
+  font-size: 14px;
+  position: absolute;
+  transform: translate(-100%, 50%);
+}

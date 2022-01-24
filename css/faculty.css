@@ -1,0 +1,54 @@
+.grids h3 {
+  background-color: #586b8c;
+  color: aliceblue;
+  padding: 9px 20px;
+}
+
+.tables th,
+.tables td {
+  border: 2px solid grey;
+  text-align: center;
+  padding: 9px;
+}
+
+button {
+  background-color: #4158d0;
+  color: white;
+  width: 9rem;
+  border: none;
+  font-size: 20px;
+  padding: 9px;
+  transition: all 0.5s;
+  margin: 20px 0 0 40px;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: blueviolet;
+  cursor: pointer;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.detail-tables {
+  padding: 10px 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.overflow {
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+}
