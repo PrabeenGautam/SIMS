@@ -1,7 +1,6 @@
 <?php
-// session_start();
-// $_SESSION["userId"] = "1";
-// $conn = mysqli_connect("localhost", "root", "", "cms") or die("Connection Error: " . mysqli_error($conn));
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
 
 // if (count($_POST) > 0) {
 //   $result = mysqli_query($conn, "SELECT *from users WHERE userId='" . $_SESSION["userId"] . "'");
@@ -12,6 +11,19 @@
 //   } else
 //     $message = "Current Password is not correct!!";
 // }
+ $sessionEmail = $_SESSION['email'];
+  $username_sql = "Select username from login where email= '$sessionEmail'";
+  
+  $fetch_username = mysqli_query($db, $username_sql);
+  while($row = mysqli_fetch_row($fetch_username)) {
+    $username =  $row[0];
+  }
+
+?>
+
+<?php
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +37,7 @@
   <link rel="stylesheet" href="../../css/sharedsb.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
   <link rel="stylesheet" href="../../css/userprofile.css" />
+  <link rel="stylesheet" href="../../css/faculty.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <script src="../JS/toggle.js"></script>
 </head>
@@ -55,10 +68,7 @@
           <td><a href="./addclass.php">Add Class</a></td>
         </tr>
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
+
 
         <tr class="active">
           <td><i class="fas fa-id-badge"></i></td>
@@ -72,62 +82,97 @@
 
         <tr>
           <td><i class=" fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
 
     <section class="grids">
-      <fieldset>
-        <legend>Your Email account:</legend>
-        <div class="data">
-          <label for="email">Current Email: </label>
-          <input type="email" id="email" value="admin@admin.com" disabled />
+      <div class="section">
+        <div class="left-section">
+          <div class='card-section'>
+            <div class='heading'>
+              <span class='title-icon'>
+                <i class="fas fa-user-md"></i>
+              </span>
+              <span class='title'>Your Profile</span>
+            </div>
+
+
+            <div class="content-section">
+              <div class="mid-content">
+                <!-- Heading  -->
+                <div class="label-title">
+                  <i class="fas fa-envelope mid-icon"></i>
+                  <label class='mid-title'>Current Email</label>
+                </div>
+
+                <!-- Input Field  -->
+                <input type='email' class='input custom-input' value='<?php echo $_SESSION['email'] ?>' disabled />
+              </div>
+
+              <div class="mid-content">
+                <!-- Heading  -->
+                <div class="label-title">
+                  <i class="fas fa-user mid-icon"></i>
+                  <label class='mid-title'>User Name</label>
+                </div>
+
+                <!-- Input Field  -->
+                <input type='text' class='input custom-input' value='<?php echo $username?>' disabled />
+              </div>
+            </div>
+          </div>
         </div>
-      </fieldset>
-      <form name="frmChange" method="post" action="" onSubmit="return validatePassword()">
-        <fieldset>
-          <legend>Change Password:</legend>
-          <div class="message">
-            <?php if (isset($message)) {
-              echo $message;
-            }
-            ?>
+        <div class="right-section">
+          <div class='card-section'>
+            <div class='heading'>
+              <span class='title-icon'>
+                <i class="fas fa-user-md"></i>
+              </span>
+              <span class='title'>Change Password</span>
+            </div>
+
+
+            <div class="content-section">
+              <div class="mid-content">
+                <!-- Heading  -->
+                <div class="label-title">
+                  <i class="fas fa-code mid-icon"></i>
+                  <label class='mid-title'>Current Password</label>
+                </div>
+
+                <!-- Input Field  -->
+                <input type='text' placeholder='Enter Current Password' class='input custom-input' />
+              </div>
+
+              <div class="mid-content">
+                <!-- Heading  -->
+                <div class="label-title">
+                  <i class="fas fa-code mid-icon"></i>
+                  <label class='mid-title'>New Password</label>
+                </div>
+
+                <!-- Input Field  -->
+                <input type='text' class='input custom-input' placeholder='Enter Password' />
+              </div>
+
+              <div class="mid-content">
+                <!-- Heading  -->
+                <div class="label-title">
+                  <i class="fas fa-envelope mid-icon"></i>
+                  <label class='mid-title'>Re-Enter Password</label>
+                </div>
+
+                <!-- Input Field  -->
+                <input type='text' class='input custom-input' placeholder='Re-Enter Password' />
+              </div>
+            </div>
+            <button class="btn">Change Password</button>
           </div>
-          <div class="data">
-            <div>
-              <label for="password">Current Password: </label>
-              <input type="password" id="currentPass" name="currentPassword" />
-              <span>
-                <i class="fas fa-eye" id="eye" onclick="toggle()"></i>
-              </span>
-              <span id="currentPassword" class="required"></span>
-            </div>
+        </div>
 
-            <br />
-
-            <div>
-              <label for="password1">New Password: </label>
-              <input type="password" id="newPass" name="newPassword" />
-              <span>
-                <i class="fas fa-eye" id="eye1" onclick="toggle1()"></i>
-              </span>
-              <span id="newPassword" class="required"></span>
-            </div>
-
-            <br />
-
-            <div>
-              <label for="password2">Confirm New Password: </label>
-              <input type="password" id="confirmPass" name="confirmPassword" />
-              <span>
-                <i class="fas fa-eye" id="eye2" onclick="toggle2()"></i>
-              </span>
-              <span id="confirmPassword" class="required"></span>
-            </div>
-          </div>
-          <input type="submit" name="submit" value="Submit" class="button">
-        </fieldset>
+      </div>
       </form>
     </section>
   </div>

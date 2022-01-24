@@ -1,3 +1,8 @@
+<?php
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +14,7 @@
   <link rel="stylesheet" href="../../css/sharedsb.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
+  <link rel="stylesheet" href="../../css/faculty.css" />
 </head>
 
 <body>
@@ -38,10 +44,6 @@
         </tr>
 
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
 
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
@@ -55,17 +57,120 @@
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
     <section class="grids">
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aspernatur
-        possimus, quae odio fuga fugiat minus! Odio mollitia cupiditate error
-        esse ipsum modi veritatis voluptatum repudiandae, impedit architecto
-        aut vitae a.
-      </p>
+      <h3>Add Subjects</h3>
+
+      <form>
+
+        <div class='card-section'>
+          <div class='heading'>
+            <span class='title-icon'>
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class='title'>Add Subjects</span>
+          </div>
+
+
+          <div class="content-section">
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-book mid-icon"></i>
+                <label class='mid-title'>Class</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' placeholder='Enter Class' required name='className' />
+            </div>
+
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-book mid-icon"></i>
+                <label class='mid-title'>Section</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' required placeholder='Enter Class' name='sectionName' />
+            </div>
+
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-code mid-icon"></i>
+                <label class='mid-title'>Class Code</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' placeholder='Enter Class Code' required name='classCode' />
+            </div>
+
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-file mid-icon"></i>
+                <label class='mid-title'>Description</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <textarea rows='4' cols='50' name='description' placeholder='Enter Description' class='input textarea'></textarea>
+            </div>
+          </div>
+          <button class="btn">Submit</button>
+        </div>
+      </form>
+
+      <div class='card-section'>
+        <div class='heading'>
+          <span class='title-icon'>
+            <i class="fas fa-plus"></i>
+          </span>
+          <span class='title'>View Subjects</span>
+        </div>
+
+
+        <div class="table-section">
+          <table class="tables">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Class Code</th>
+                <th>Description</th>
+                <th>Action</th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>29</td>
+                <td>12</td>
+                <td>A</td>
+                <td>202</td>
+                <td>Class 12: Section : A</td>
+                <td>
+                  <button class="btn-general btn-edit">Edit</button>
+                  <button class="btn-general btn-danger">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
     </section>
   </div>
 </body>

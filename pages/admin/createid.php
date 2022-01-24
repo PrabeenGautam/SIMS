@@ -1,3 +1,8 @@
+<?php
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +14,7 @@
   <link rel="stylesheet" href="../../css/sharedsb.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
+  <link rel="stylesheet" href="../../css/faculty.css" />
 </head>
 
 <body>
@@ -37,12 +43,6 @@
           <td><a href="./addclass.php">Add Class</a></td>
         </tr>
 
-
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
-
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
           <td><a href="./userprofile.php">User Profile</a></td>
@@ -50,17 +50,69 @@
 
         <tr class="active">
           <td><i class="fas fa-plus"></i></td>
-          <td><a href="./userprofile.php">Create Id</a></td>
+          <td><a href="./createid.php">Create Id</a></td>
         </tr>
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
     <section class="grids">
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem tenetur repudiandae, debitis minus dolorum harum sapiente rem quibusdam dicta quod inventore provident ex nemo repellendus omnis expedita excepturi! Sequi, quo.</p>
+      <h3>Create Login Id</h3>
+      <form>
+        <div class='card-section'>
+          <div class='heading'>
+            <span class='title-icon'>
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class='title'>Add Subjects</span>
+          </div>
+
+
+          <div class="content-section">
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Email</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='email' class='input' placeholder='Enter Email' required name='registerEmail' />
+            </div>
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Password</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='password' class='input' placeholder='Enter Password' required name='registerPassword' />
+            </div>
+
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Re-enter Password</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='password' class='input' placeholder='ReEnter Password' required name='reenterPassword' />
+            </div>
+          </div>
+          <button class="btn">Create</button>
+        </div>
+      </form>
     </section>
     <div></div>
 </body>

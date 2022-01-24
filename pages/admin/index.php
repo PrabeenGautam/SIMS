@@ -1,3 +1,16 @@
+<?php
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
+
+  $sessionEmail = $_SESSION['email'];
+  $username_sql = "Select username from login where email= '$sessionEmail'";
+  
+  $fetch_username = mysqli_query($db, $username_sql);
+  while($row = mysqli_fetch_row($fetch_username)) {
+    $username =  $row[0];
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +22,7 @@
   <link rel="stylesheet" href="../../css/sharedsb.css" type="text/css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
+  <link rel="stylesheet" href="../../css/faculty.css" />
 </head>
 
 <body>
@@ -38,10 +52,6 @@
         </tr>
 
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
 
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
@@ -50,12 +60,12 @@
 
         <tr>
           <td><i class="fas fa-plus"></i></td>
-          <td><a href="./userprofile.php">Create Id</a></td>
+          <td><a href="./createid.php">Create Id</a></td>
         </tr>
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
@@ -73,7 +83,7 @@
         <div class='cards'>
           <div class='name-details'>
             <div class='number'>199</div>
-            <div class='name'>Student</div>
+            <div class='name'>Class</div>
           </div>
           <div class='card-icons'><i class="fas fa-user-secret" style="color: #FF7676"></i></div>
         </div>
@@ -81,7 +91,7 @@
         <div class='cards'>
           <div class='name-details'>
             <div class='number'>199</div>
-            <div class='name'>Student</div>
+            <div class='name'>Subject</div>
           </div>
           <div class='card-icons'><i class="fas fa-flag" style="color: #009DDC"></i></div>
         </div>
@@ -89,12 +99,14 @@
         <div class='cards'>
           <div class='name-details'>
             <div class='number'>199</div>
-            <div class='name'>Student</div>
+            <div class='name'>Users</div>
           </div>
           <div class='card-icons'><i class="fas fa-file" style="color: #27AE60"></i></div>
         </div>
-
       </div>
+
+      <div class='welcome'> Welcome <span class='welcome-username'><?php echo $username?></span></div>
+
     </section>
     <div></div>
 </body>

@@ -1,7 +1,8 @@
 <?php
-// require_once "../php/config.php";
-// require_once "../php/session.php";
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +45,6 @@
         </tr>
 
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
 
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
@@ -61,7 +58,7 @@
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
@@ -228,52 +225,57 @@
           </div>
           <button class="btn">Submit</button>
         </div>
+      </form>
 
 
 
+      <div class="right-section">
+        <div class='card-section'>
+          <div class='heading'>
+            <span class='title-icon'>
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class='title'>View Add Students</span>
+          </div>
+          <div class="table-section">
+            <table class="tables">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Full Name</th>
+                  <th>Gender</th>
+                  <th>Date of Birth</th>
+                  <th>Address</th>
+                  <th>Class</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-        <div class="right-section">
-          <div class='card-section'>
-            <div class='heading'>
-              <span class='title-icon'>
-                <i class="fas fa-plus"></i>
-              </span>
-              <span class='title'>View Add Students</span>
-            </div>
-            <div class="table-section">
-              <table class="tables">
-                <thead>
-                  <tr>
-                    <th>Roll No</th>
-                    <th>Full Name</th>
-                    <th>Gender</th>
-                    <th>Date of Birth</th>
-                    <th>Address</th>
-                    <th>Class</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
+              <tbody>
+                <tr>
+                  <td>29</td>
+                  <td>Prabin Gautam</td>
+                  <td>Male</td>
+                  <td>2058-03-09</td>
+                  <td>Lamachaur</td>
+                  <td>12 A</td>
+                  <td>9827150647</td>
+                  <td>prabeen122@gmail.com</td>
+                  <td>
+                    <button class="btn-general btn-edit">Edit</button>
+                    <button class="btn-general btn-danger">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
 
-                <tbody>
-                  <tr>
-                    <td>29</td>
-                    <td>Prabin Gautam</td>
-                    <td>Male</td>
-                    <td>2058-03-09</td>
-                    <td>Lamachaur</td>
-                    <td>12 A</td>
-                    <td>9827150647</td>
-                    <td>prabeen122@gmail.com</td>
-                  </tr>
-                </tbody>
-
-              </table>
-            </div>
+            </table>
           </div>
         </div>
+      </div>
     </section>
-    </form>
+
   </div>
 </body>
 

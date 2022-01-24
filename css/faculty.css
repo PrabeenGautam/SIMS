@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Open-Sans;
+  src: url(../fonts/Rubik.ttf);
+}
+
 .grids h3 {
   background-color: #586b8c;
   color: aliceblue;
@@ -9,9 +14,10 @@
   border: 2px solid grey;
   text-align: center;
   padding: 9px;
+  text-align: left;
 }
 
-button {
+.btn {
   background-color: #4158d0;
   color: white;
   width: 9rem;
@@ -23,7 +29,27 @@ button {
   border-radius: 8px;
 }
 
-button:hover {
+.btn-general {
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font: inherit;
+}
+
+.btn-general:hover {
+  background-color: brown;
+}
+
+.btn-danger {
+  background-color: red;
+}
+
+.btn-edit {
+  background-color: blueviolet;
+}
+
+.btn:hover {
   background-color: blueviolet;
   cursor: pointer;
 }
@@ -48,7 +74,28 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.overflow {
-  height: calc(100vh - 150px);
-  overflow-y: auto;
+textarea {
+  resize: none;
+}
+
+.welcome {
+  background-color: #d4edda;
+  color: #40754c;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 20px auto;
+  font-size: 20px;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #40754c;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.welcome span {
+  font-weight: bold;
 }

@@ -1,6 +1,6 @@
 <?php
-// require_once "../php/config.php";
-// require_once "../php/session.php";
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
 ?>
 
 <!DOCTYPE html>
@@ -44,10 +44,7 @@
         </tr>
 
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
+
 
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
@@ -61,45 +58,103 @@
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
 
     <section class="grids">
-      <h3>Teacher List</h3>
+      <h3>Add Subjects</h3>
 
-      <table class="tables">
-        <thead>
-          <tr>
-            <th>Teacher ID</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Email</th>
-            <th>Course</th>
-          </tr>
-        </thead>
+      <form>
 
-        <?php
+        <div class='card-section'>
+          <div class='heading'>
+            <span class='title-icon'>
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class='title'>Add Subjects</span>
+          </div>
 
-        $count = 0;
-        $statement = mysqli_query($db, "select * from teachers order by teacher_id asc");
-        while ($tc_data = mysqli_fetch_array($statement)) {
-          $count++;
-        ?>
-          <tbody>
-            <tr>
-              <td><?php echo $tc_data['teacher_id']; ?></td>
-              <td><?php echo $tc_data['teacher_name']; ?></td>
-              <td><?php echo $tc_data['teacher_department']; ?></td>
-              <td><?php echo $tc_data['teacher_email']; ?></td>
-              <td><?php echo $tc_data['teacher_course']; ?></td>
-            </tr>
-          </tbody>
 
-        <?php } ?>
-      </table>
-      <button><a href="./add.php#teacher">Add teacher</a></button>
+          <div class="content-section">
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Course Id</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' placeholder='Enter Course Id' required name='courseId' />
+            </div>
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Course Name</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' placeholder='Enter Course Name' required name='courseName' />
+            </div>
+
+            <div class="mid-content">
+
+              <!-- Heading  -->
+              <div class="label-title">
+                <i class="fas fa-user mid-icon"></i>
+                <label class='mid-title'>Class</label>
+                <span class='required'> *</span>
+              </div>
+
+              <!-- Input Field  -->
+              <input type='text' class='input' placeholder='Enter Class' required name='courseClass' />
+            </div>
+          </div>
+          <button class="btn">Submit</button>
+        </div>
+      </form>
+
+      <div class='card-section'>
+        <div class='heading'>
+          <span class='title-icon'>
+            <i class="fas fa-plus"></i>
+          </span>
+          <span class='title'>View Subjects</span>
+        </div>
+
+
+        <div class="table-section">
+          <table class="tables">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Course</th>
+                <th>Class</th>
+                <th>Action</th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>29</td>
+                <td>Prabin Gautam</td>
+                <td>12</td>
+                <td>
+                  <button class="btn-general btn-edit">Edit</button>
+                  <button class="btn-general btn-danger">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
     </section>
   </div>
 </body>

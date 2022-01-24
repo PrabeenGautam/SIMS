@@ -30,6 +30,7 @@ body {
   text-align: center;
   padding: 20px 0;
   border-bottom: 1px solid silver;
+  margin: 0 !important;
 }
 .center form {
   padding: 0 40px;
@@ -38,8 +39,12 @@ body {
 form .txt_field {
   position: relative;
   border-bottom: 2px solid #adadad;
+}
+
+form .txt_field:first-child {
   margin: 30px 0;
 }
+
 .txt_field input {
   width: 100%;
   padding: 0 5px;
@@ -49,16 +54,7 @@ form .txt_field {
   background: none;
   outline: none;
 }
-.txt_field label {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  color: #adadad;
-  transform: translateY(-50%);
-  font-size: 16px;
-  pointer-events: none;
-  transition: 0.5s;
-}
+
 .txt_field span::before {
   content: '';
   position: absolute;
@@ -94,4 +90,12 @@ input[type='submit'] {
 input[type='submit']:hover {
   border-color: #2691d9;
   transition: 0.5s;
+}
+
+.message {
+  background-color: #f2dede;
+  color: #a94442;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
 }

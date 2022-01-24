@@ -1,3 +1,8 @@
+<?php
+  require_once('../../php/config.php'); 
+  require_once('../../php/session.php'); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,10 +44,7 @@
         </tr>
 
 
-        <tr>
-          <td><i class="fas fa-cog"></i></td>
-          <td><a href="./settings.php">Settings</a></td>
-        </tr>
+
 
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
@@ -56,43 +58,60 @@
 
         <tr>
           <td><i class="fas fa-arrow-alt-circle-left"></i></td>
-          <td><a href="../php/logout.php">Logout</a></td>
+          <td><a href="../../php/logout.php">Logout</a></td>
         </tr>
       </table>
     </section>
 
     <section class="grids">
-      <table class="tables">
-        <thead>
-          <tr>
-            <th>Roll No</th>
-            <th>Full Name</th>
-            <th>Class</th>
-            <th>Section</th>
-            <th>Phone</th>
-            <th>Email</th>
-          </tr>
-        </thead>
+      <h3>View Students</h3>
+      <div class='card-section'>
+        <div class='heading'>
+          <span class='title-icon'>
+            <i class="fas fa-plus"></i>
+          </span>
+          <span class='title'>View Students</span>
+        </div>
 
-        <?php
 
-        $count = 0;
-        $statement = mysqli_query($db, "select * from teachers order by teacher_id asc");
-        while ($tc_data = mysqli_fetch_array($statement)) {
-          $count++;
-        ?>
-          <tbody>
-            <tr>
-              <td><?php echo $tc_data['teacher_id']; ?></td>
-              <td><?php echo $tc_data['teacher_name']; ?></td>
-              <td><?php echo $tc_data['teacher_department']; ?></td>
-              <td><?php echo $tc_data['teacher_email']; ?></td>
-              <td><?php echo $tc_data['teacher_course']; ?></td>
-            </tr>
-          </tbody>
+        <div class="content-section">
+          <table class="tables">
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Full Name</th>
+                <th>Gender</th>
+                <th>Date of Birth</th>
+                <th>Address</th>
+                <th>Class</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-        <?php } ?>
-      </table>
+            <tbody>
+              <tr>
+                <td>29</td>
+                <td>Prabin Gautam</td>
+                <td>Male</td>
+                <td>2058-03-09</td>
+                <td>Lamachaur</td>
+                <td>12 A</td>
+                <td>9827150647</td>
+                <td>prabeen122@gmail.com</td>
+                <td>
+                  <button class="btn-general btn-edit">Edit</button>
+                  <button class="btn-general btn-danger">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+
+
     </section>
   </div>
 </body>
