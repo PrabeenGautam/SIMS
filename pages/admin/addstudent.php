@@ -1,6 +1,48 @@
 <?php
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
+
+  try{
+    if(isset($_POST['submit'])) {
+      $studentFirstName = $_POST['studentFirstName'];
+      $studentMiddleName = $_POST['studentMiddleName'];
+      $studentLastName = $_POST['studentLastName'];
+      $gender = $_POST['gender'];
+      $studentDOB = $_POST['studentDOB'];
+      $studentPhone = $_POST['studentPhone'];
+      $studentEmail = $_POST['studentEmail'];
+      $studentAddress = $_POST['studentAddress'];
+      $studentClass = $_POST['studentClass'];
+      $studentSection = $_POST['studentSection'];
+      $studentRoll = $_POST['studentRoll'];
+
+        if(empty($studentFirstName)) throw new Error('Student First Name should not be empty');
+        else if(empty($studentLastName)) throw new Error('Student Last Name should not be empty');
+        else if($gender  === 'default') throw new Error('Gender should not be empty');
+         else if(empty($studentDOB)) throw new Error('Students Date of Birth should not be empty');
+         else if(empty($studentPhone)) throw new Error('Student Phone should not be empty');
+         else if(empty($studentEmail)) throw new Error('student Email should not be empty');
+         else if(empty($studentAddress)) throw new Error('Student Address should not be empty');
+         else if(empty($studentClass)) throw new Error('Student Class should not be empty');
+         else if(empty($studentSection)) throw new Error('Student Section should not be empty');
+         else if(empty($studentRoll)) throw new Error('Student Roll should not be empty');
+        else {
+          $sql = "SELECT * from student";
+          $result = mysqli_query($db, $sql);
+          while($row = mysqli_fetch_array($result)) {           
+            if($studentEmail == $row['studentEmail'] && $studentClass== $row['studentClass'] && $studentSection == $row['studentSection']&& $studentRoll == $row['studentRoll'] && $studentFirstName == $row['studentRoll']) {
+              throw new Error('Stundet Details Already Existed');
+            } 
+          }
+          $insertSQL = "INSERT INTO student (studentFirstName, studentMiddleName, studentLastName, gender, studentDOB, studentPhone, studentEmail, studentAddress, studentClass, studentSection, studentRoll) VALUES ('$studentFirstName', '$studentMiddleName', '$studentLastName', '$gender', '$studentDOB', '$studentPhone', '$studentEmail', '$studentAddress', '$studentClass', '$studentSection', '$studentRoll')";
+          mysqli_query($db, $insertSQL);
+          $success = 'Student Details Added Succesfully';
+        }     
+    } 
+  }catch (Error $errorData) {
+    $error = $errorData->getMessage();
+  }
+
 ?>
 
 
@@ -64,13 +106,30 @@
     </section>
     <section class="grids">
       <h3>Add Student</h3>
-      <form>
+      <form method='POST'>
         <div class='card-section'>
           <div class='heading'>
             <span class='title-icon'>
               <i class="fas fa-plus"></i>
             </span>
             <span class='title'>Add Students</span>
+          </div>
+
+          <div class="error-div">
+            <?php if(isset($error)) {?>
+            <div class="message">
+              <?php echo $error; ?>
+            </div>
+            <?php
+                }?>
+          </div>
+          <div class="success-div">
+            <?php if(isset($success)) {?>
+            <div class="success">
+              <?php echo $success; ?>
+            </div>
+            <?php
+                }?>
           </div>
 
           <div class="allinputfield content-section">
@@ -84,7 +143,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter First Name' required name='studentFirstName' />
+              <input type='text' class='input' placeholder='Enter First Name' name='studentFirstName' />
             </div>
 
             <div class="mid-content">
@@ -110,7 +169,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Last Name' required name='studentLastName' />
+              <input type='text' class='input' placeholder='Enter Last Name' name='studentLastName' />
             </div>
 
             <div class="mid-content">
@@ -124,7 +183,7 @@
 
               <!-- Input Field  -->
               <select name="gender" class='input'>
-                <option value="" disabled selected>--Select--</option>
+                <option value="default" selected>--Select--</option>
                 <option value='male'>Male</option>
                 <option value='female'>Female</option>
                 <option value='other'>Other</option>
@@ -141,7 +200,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='date' class='input' placeholder='Enter DOB' required name='studentDOB' />
+              <input type='date' class='input' placeholder='Enter DOB' name='studentDOB' />
             </div>
 
             <div class="mid-content">
@@ -154,7 +213,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='number' class='input' placeholder='Enter Phone number' required name='studentPhone' />
+              <input type='number' class='input' placeholder='Enter Phone number' name='studentPhone' />
             </div>
 
             <div class="mid-content">
@@ -167,7 +226,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='email' class='input' placeholder='Enter Email' required name='studentEmail' />
+              <input type='email' class='input' placeholder='Enter Email' name='studentEmail' />
             </div>
 
             <div class="mid-content">
@@ -180,7 +239,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Address' required name='studentAddress' />
+              <input type='text' class='input' placeholder='Enter Address' name='studentAddress' />
             </div>
 
             <div class="mid-content">
@@ -193,7 +252,23 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Student Class' required name='studentClass' />
+              <!-- <input type='text' class='input' placeholder='Enter Student Class' name='studentClass' /> -->
+              <select name="studentClass" class='input'>
+                <option value="default" selected>--Select--</option>
+                <?php
+                    $sql = "SELECT distinct className from classes";
+                    $result = mysqli_query($db, $sql);
+                    while($row = mysqli_fetch_array($result)) {
+                      
+                ?>
+                <option value='<?php echo $row['className'] ?>'>
+                  <?php 
+                    echo $row['className'];
+                  ?>
+                </option>
+                <?php 
+              }?>
+              </select>
             </div>
 
             <div class="mid-content">
@@ -206,7 +281,23 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Student Section' required name='studentSection' />
+              <!-- <input type='text' class='input' placeholder='Enter Student Section' name='studentSection' /> -->
+              <select name="studentSection" class='input'>
+                <option value="default" selected>--Select--</option>
+                <?php
+                    $sql = "SELECT distinct classSection from classes";
+                    $result = mysqli_query($db, $sql);
+                    while($row = mysqli_fetch_array($result)) {
+                      
+                ?>
+                <option value='<?php echo $row['classSection'] ?>'>
+                  <?php 
+                    echo $row['classSection'];
+                  ?>
+                </option>
+                <?php 
+              }?>
+              </select>
             </div>
 
             <div class="mid-content">
@@ -219,11 +310,11 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Roll no' required name='studentRoll' />
+              <input type='text' class='input' placeholder='Enter Roll no' name='studentRoll' />
             </div>
 
           </div>
-          <button class="btn">Submit</button>
+          <button class="btn" name='submit'>Submit</button>
         </div>
       </form>
 
@@ -255,20 +346,29 @@
 
               <tbody>
                 <tr>
-                  <td>29</td>
-                  <td>Prabin Gautam</td>
-                  <td>Male</td>
-                  <td>2058-03-09</td>
-                  <td>Lamachaur</td>
-                  <td>12 A</td>
-                  <td>9827150647</td>
-                  <td>prabeen122@gmail.com</td>
+                  <?php 
+                    $sql = "SELECT * from student";
+                    $result = mysqli_query($db, $sql);
+                    while($row = mysqli_fetch_array($result)) {
+                  ?>
+                <tr>
+                  <td><?php echo $row['studentRoll'] ?></td>
+                  <td>
+                    <?php echo $row['studentFirstName'] . ' '. $row['studentMiddleName']. ' '. $row['studentLastName'] ?>
+                  </td>
+                  <td><?php echo $row['gender'] ?></td>
+                  <td><?php echo $row['studentDOB'] ?></td>
+                  <td><?php echo $row['studentAddress'] ?></td>
+                  <td><?php echo $row['studentClass'] . ' '. $row['studentSection'] ?></td>
+                  <td><?php echo $row['studentPhone'] ?></td>
+                  <td><?php echo $row['studentEmail'] ?></td>
                   <td>
                     <button class="btn-general btn-edit">Edit</button>
                     <button class="btn-general btn-danger">Delete</button>
                   </td>
                 </tr>
               </tbody>
+              <?php } ?>
 
             </table>
           </div>

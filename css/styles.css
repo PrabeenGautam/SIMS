@@ -98,4 +98,13 @@ input[type='submit']:hover {
   padding: 10px;
   text-align: center;
   border-radius: 5px;
+  /* animation: fadeout 4s forwards; */
+}
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

@@ -135,7 +135,7 @@
 }
 
 .custom-input {
-  min-width: 25rem;
+  max-width: 29rem;
 }
 
 .input:focus {

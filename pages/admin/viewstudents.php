@@ -74,7 +74,7 @@
         </div>
 
 
-        <div class="content-section">
+        <div class="table-section">
           <table class="tables">
             <thead>
               <tr>
@@ -92,20 +92,29 @@
 
             <tbody>
               <tr>
-                <td>29</td>
-                <td>Prabin Gautam</td>
-                <td>Male</td>
-                <td>2058-03-09</td>
-                <td>Lamachaur</td>
-                <td>12 A</td>
-                <td>9827150647</td>
-                <td>prabeen122@gmail.com</td>
+                <?php 
+                    $sql = "SELECT * from student";
+                    $result = mysqli_query($db, $sql);
+                    while($row = mysqli_fetch_array($result)) {
+                  ?>
+              <tr>
+                <td><?php echo $row['studentRoll'] ?></td>
+                <td>
+                  <?php echo $row['studentFirstName'] . ' '. $row['studentMiddleName']. ' '. $row['studentLastName'] ?>
+                </td>
+                <td><?php echo $row['gender'] ?></td>
+                <td><?php echo $row['studentDOB'] ?></td>
+                <td><?php echo $row['studentAddress'] ?></td>
+                <td><?php echo $row['studentClass'] . ' '. $row['studentSection'] ?></td>
+                <td><?php echo $row['studentPhone'] ?></td>
+                <td><?php echo $row['studentEmail'] ?></td>
                 <td>
                   <button class="btn-general btn-edit">Edit</button>
                   <button class="btn-general btn-danger">Delete</button>
                 </td>
               </tr>
             </tbody>
+            <?php } ?>
 
           </table>
         </div>

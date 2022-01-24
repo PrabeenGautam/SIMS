@@ -2,13 +2,12 @@
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
 
-  $sessionEmail = $_SESSION['email'];
-  $username_sql = "Select username from login where email= '$sessionEmail'";
-  
-  $fetch_username = mysqli_query($db, $username_sql);
-  while($row = mysqli_fetch_row($fetch_username)) {
-    $username =  $row[0];
-  }
+    $sessionEmail = $_SESSION['email'];
+    $sql = "Select * from login where email='$sessionEmail'"; //Selecting row from same 
+    $result = mysqli_query($db, $sql);
+    
+    $row = mysqli_fetch_array($result);
+    $db_username = $row['username'];
 ?>
 
 <!DOCTYPE html>
@@ -105,7 +104,7 @@
         </div>
       </div>
 
-      <div class='welcome'> Welcome <span class='welcome-username'><?php echo $username?></span></div>
+      <div class='welcome'> Welcome <span class='welcome-username'><?php echo $db_username?></span></div>
 
     </section>
     <div></div>

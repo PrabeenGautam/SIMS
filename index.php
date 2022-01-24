@@ -56,21 +56,21 @@
 <body>
   <div class="center">
     <h1>Login</h1>
-    
+
     <?php if(isset($error)) {
       ?>
-      <div class="message">
-        <?php echo $error; ?>
-      </div>
+    <div class="message">
+      <?php echo $error; ?>
+    </div>
     <?php
     }
     ?>
 
     <?php if(isset($success)) {
       ?>
-      <div class="success">
-        <?php echo $success; ?>
-      </div>
+    <div class="success">
+      <?php echo $success; ?>
+    </div>
     <?php
     }
     ?>
@@ -79,17 +79,18 @@
       <div class="txt_field mb-5">
         <label>Enter Email</label>
         <input type="email" name='email' />
-      </div>    
+      </div>
 
       <div class="txt_field">
         <label>Password</label>
-        <input type="password" name='password'  />
+        <input type="password" name='password' />
       </div>
 
-      
-      <input type="submit" value="Login" class="mb-5 mt-3" name='submit'/>
+
+      <input type="submit" value="Login" class="mb-5 mt-3" name='submit' />
     </form>
   </div>
 </body>
+<script src="./JS/script.js"></script>
 
 </html>

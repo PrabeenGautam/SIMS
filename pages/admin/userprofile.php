@@ -11,19 +11,42 @@
 //   } else
 //     $message = "Current Password is not correct!!";
 // }
- $sessionEmail = $_SESSION['email'];
-  $username_sql = "Select username from login where email= '$sessionEmail'";
-  
-  $fetch_username = mysqli_query($db, $username_sql);
-  while($row = mysqli_fetch_row($fetch_username)) {
-    $username =  $row[0];
+
+  try {
+
+    $sessionEmail = $_SESSION['email'];
+    $sql = "Select * from login where email='$sessionEmail'"; //Selecting row from same 
+    $result = mysqli_query($db, $sql);
+    
+    $row = mysqli_fetch_array($result);
+    $db_password = $row['password'];
+    $db_username = $row['username'];
+
+    if(isset($_POST['submit'])) {
+        $currentPasswordEntered = $_POST['currentPassword'];
+        $newPasswordEntered = $_POST['newPassword'];
+        $newPasswordReEntered = $_POST['newRePassword'];
+
+        if(empty($currentPasswordEntered))
+          throw new Exception("Current Password mustn't be empty");
+        else if(empty($newPasswordEntered))
+          throw new Exception("New Password mustn't be empty");
+        else if($newPasswordEntered != $newPasswordReEntered) {
+          throw new Exception('New Passwords do not matched.');
+        } else if($currentPasswordEntered != $db_password) {
+          throw new Exception('Incorrect Current Password');
+        }
+        else {
+          $updateSQL = "UPDATE login set password='$newPasswordEntered' where email='$sessionEmail'";
+          mysqli_query($db, $updateSQL);
+          $success = 'Password Changed. Your new Pasword: ' . $newPasswordEntered;
+        }
+    }
+
+  } catch (Exception $errors) {
+    $error = $errors->getMessage();
   }
 
-?>
-
-<?php
-  require_once('../../php/config.php'); 
-  require_once('../../php/session.php'); 
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +62,6 @@
   <link rel="stylesheet" href="../../css/userprofile.css" />
   <link rel="stylesheet" href="../../css/faculty.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
-  <script src="../JS/toggle.js"></script>
 </head>
 
 <body>
@@ -119,63 +141,82 @@
                 </div>
 
                 <!-- Input Field  -->
-                <input type='text' class='input custom-input' value='<?php echo $username?>' disabled />
+                <input type='text' class='input custom-input' value='<?php echo $db_username?>' disabled />
               </div>
             </div>
           </div>
         </div>
         <div class="right-section">
-          <div class='card-section'>
-            <div class='heading'>
-              <span class='title-icon'>
-                <i class="fas fa-user-md"></i>
-              </span>
-              <span class='title'>Change Password</span>
+          <form method='POST'>
+            <div class='card-section'>
+              <div class='heading'>
+                <span class='title-icon'>
+                  <i class="fas fa-user-md"></i>
+                </span>
+                <span class='title'>Change Password</span>
+              </div>
+
+              <div class="error-div">
+                <?php if(isset($error)) {?>
+                <div class="message">
+                  <?php echo $error; ?>
+                </div>
+                <?php
+                }?>
+              </div>
+              <div class="success-div">
+                <?php if(isset($success)) {?>
+                <div class="success">
+                  <?php echo $success; ?>
+                </div>
+                <?php
+                }?>
+              </div>
+              <div class="content-section">
+                <div class="mid-content">
+                  <!-- Heading  -->
+                  <div class="label-title">
+                    <i class="fas fa-code mid-icon"></i>
+                    <label class='mid-title'>Current Password</label>
+                  </div>
+
+                  <!-- Input Field  -->
+                  <input type='text' placeholder='Enter Current Password' class='input custom-input'
+                    name='currentPassword' />
+                </div>
+
+                <div class="mid-content">
+                  <!-- Heading  -->
+                  <div class="label-title">
+                    <i class="fas fa-code mid-icon"></i>
+                    <label class='mid-title'>New Password</label>
+                  </div>
+
+                  <!-- Input Field  -->
+                  <input type='text' class='input custom-input' placeholder='Enter Password' name='newPassword' />
+                </div>
+
+                <div class="mid-content">
+                  <!-- Heading  -->
+                  <div class="label-title">
+                    <i class="fas fa-envelope mid-icon"></i>
+                    <label class='mid-title'>Re-Enter Password</label>
+                  </div>
+
+                  <!-- Input Field  -->
+                  <input type='text' class='input custom-input' placeholder='Re-Enter Password' name='newRePassword' />
+                </div>
+              </div>
+              <button class="btn" name='submit'>Change Password</button>
             </div>
-
-
-            <div class="content-section">
-              <div class="mid-content">
-                <!-- Heading  -->
-                <div class="label-title">
-                  <i class="fas fa-code mid-icon"></i>
-                  <label class='mid-title'>Current Password</label>
-                </div>
-
-                <!-- Input Field  -->
-                <input type='text' placeholder='Enter Current Password' class='input custom-input' />
-              </div>
-
-              <div class="mid-content">
-                <!-- Heading  -->
-                <div class="label-title">
-                  <i class="fas fa-code mid-icon"></i>
-                  <label class='mid-title'>New Password</label>
-                </div>
-
-                <!-- Input Field  -->
-                <input type='text' class='input custom-input' placeholder='Enter Password' />
-              </div>
-
-              <div class="mid-content">
-                <!-- Heading  -->
-                <div class="label-title">
-                  <i class="fas fa-envelope mid-icon"></i>
-                  <label class='mid-title'>Re-Enter Password</label>
-                </div>
-
-                <!-- Input Field  -->
-                <input type='text' class='input custom-input' placeholder='Re-Enter Password' />
-              </div>
-            </div>
-            <button class="btn">Change Password</button>
-          </div>
+          </form>
         </div>
 
       </div>
       </form>
     </section>
   </div>
+  <script src="../../JS/script.js"></script>
 </body>
 
 

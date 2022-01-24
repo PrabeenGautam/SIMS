@@ -1,6 +1,37 @@
 <?php
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
+
+   $sessionEmail = $_SESSION['email'];
+   
+  try{
+    if(isset($_POST['submit'])) {
+      $className = $_POST['className'];
+      $sectionName = $_POST['sectionName'];
+      $classCode = $_POST['classCode'];
+      $classDescription = $_POST['classDescription'];
+
+        if(empty($className)) throw new Error('Classname should not be empty');
+        else if(empty($sectionName)) throw new Error('Section should not be empty');
+        else if(empty($classCode)) throw new Error('Class Code should not be empty');
+        else if(empty($classDescription)) throw new Error('Description should not be empty');
+        else {
+          $sql = "SELECT * from classes";
+          $result = mysqli_query($db, $sql);
+          while($row = mysqli_fetch_array($result)) {           
+            if($className == $row['className'] && $sectionName == $row['classSection']) {
+              throw new Error('Class ' . $className . ' with section ' . $sectionName . ' Already Existed');
+            } 
+          }
+          $insertSQL = "INSERT INTO classes (className, classSection, classCode, classDescription) VALUES ('$className', '$sectionName', '$classCode', '$classDescription')";
+          mysqli_query($db, $insertSQL);
+          $success = 'Class ' . $className .  ' Added Succesfully with section ' . $sectionName;
+        }     
+    } 
+  }catch (Error $errorData) {
+    $error = $errorData->getMessage();
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +95,7 @@
     <section class="grids">
       <h3>Add Subjects</h3>
 
-      <form>
+      <form method='POST'>
 
         <div class='card-section'>
           <div class='heading'>
@@ -74,6 +105,22 @@
             <span class='title'>Add Subjects</span>
           </div>
 
+          <div class="error-div">
+            <?php if(isset($error)) {?>
+            <div class="message">
+              <?php echo $error; ?>
+            </div>
+            <?php
+                }?>
+          </div>
+          <div class="success-div">
+            <?php if(isset($success)) {?>
+            <div class="success">
+              <?php echo $success; ?>
+            </div>
+            <?php
+                }?>
+          </div>
 
           <div class="content-section">
             <div class="mid-content">
@@ -86,7 +133,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class' required name='className' />
+              <input type='text' class='input' placeholder='Enter Class' name='className' />
             </div>
 
             <div class="mid-content">
@@ -99,7 +146,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' required placeholder='Enter Class' name='sectionName' />
+              <input type='text' class='input' placeholder='Enter Class' name='sectionName' />
             </div>
 
             <div class="mid-content">
@@ -112,7 +159,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class Code' required name='classCode' />
+              <input type='text' class='input' placeholder='Enter Class Code' name='classCode' />
             </div>
 
             <div class="mid-content">
@@ -125,10 +172,11 @@
               </div>
 
               <!-- Input Field  -->
-              <textarea rows='4' cols='50' name='description' placeholder='Enter Description' class='input textarea'></textarea>
+              <textarea rows='4' cols='50' name='classDescription' placeholder='Enter Description'
+                class='input textarea'></textarea>
             </div>
           </div>
-          <button class="btn">Submit</button>
+          <button class="btn" name='submit'>Submit</button>
         </div>
       </form>
 
@@ -156,21 +204,28 @@
             </thead>
 
             <tbody>
+              <?php 
+                $sql = "SELECT * from classes";
+                $result = mysqli_query($db, $sql);
+                while($row = mysqli_fetch_array($result)) {
+              ?>
               <tr>
-                <td>29</td>
-                <td>12</td>
-                <td>A</td>
-                <td>202</td>
-                <td>Class 12: Section : A</td>
+                <td><?php echo $row['id'] ?></td>
+                <td><?php echo $row['className'] ?></td>
+                <td><?php echo $row['classSection'] ?></td>
+                <td><?php echo $row['classCode'] ?></td>
+                <td><?php echo $row['classDescription'] ?></td>
                 <td>
                   <button class="btn-general btn-edit">Edit</button>
                   <button class="btn-general btn-danger">Delete</button>
                 </td>
               </tr>
             </tbody>
+            <?php } ?>
 
           </table>
         </div>
+      </div>
     </section>
   </div>
 </body>

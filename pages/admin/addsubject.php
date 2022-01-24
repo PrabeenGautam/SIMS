@@ -1,6 +1,41 @@
 <?php
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
+
+  $sessionEmail = $_SESSION['email'];
+   
+  try{
+    if(isset($_POST['submit'])) {
+      $courseID = $_POST['courseId'];
+      $courseName = $_POST['courseName'];
+      $courseClass = $_POST['courseClass'];
+
+        if(empty($courseID)) throw new Error('Course ID should not be empty');
+        else if(empty($courseName)) throw new Error('Course Name should not be empty');
+        else if(empty($courseClass)) throw new Error('Course Class should not be empty');
+        else {
+          $sql = "SELECT * from course";
+          $result = mysqli_query($db, $sql);
+          while($row = mysqli_fetch_array($result)) {           
+            if($courseID == $row['courseId']) {
+              throw new Error('CourseId ' . $courseID . ' Already Existed');
+            } 
+          }
+          $insertSQL = "INSERT INTO course (courseId, courseName, courseClass) VALUES ('$courseID', '$courseName', '$courseClass')";
+          mysqli_query($db, $insertSQL);
+          $success = 'Course ' . $courseName .  ' Added Succesfully with Course Id  ' . $courseID;
+        }     
+    } 
+
+    if(isset($_POST['del'])) {
+      
+      // $sql_del = "Delete FROM student where id = 4";
+    }
+    
+  }catch (Error $errorData) {
+    $error = $errorData->getMessage();
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -43,9 +78,6 @@
           <td><a href="./addclass.php">Add Class</a></td>
         </tr>
 
-
-
-
         <tr>
           <td><i class="fas fa-id-badge"></i></td>
           <td><a href="./userprofile.php">User Profile</a></td>
@@ -65,9 +97,7 @@
 
     <section class="grids">
       <h3>Add Subjects</h3>
-
-      <form>
-
+      <form method='POST'>
         <div class='card-section'>
           <div class='heading'>
             <span class='title-icon'>
@@ -76,7 +106,22 @@
             <span class='title'>Add Subjects</span>
           </div>
 
-
+          <div class="error-div">
+            <?php if(isset($error)) {?>
+            <div class="message">
+              <?php echo $error; ?>
+            </div>
+            <?php
+                }?>
+          </div>
+          <div class="success-div">
+            <?php if(isset($success)) {?>
+            <div class="success">
+              <?php echo $success; ?>
+            </div>
+            <?php
+                }?>
+          </div>
           <div class="content-section">
             <div class="mid-content">
 
@@ -88,7 +133,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Course Id' required name='courseId' />
+              <input type='text' class='input' placeholder='Enter Course Id' name='courseId' />
             </div>
             <div class="mid-content">
 
@@ -100,7 +145,7 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Course Name' required name='courseName' />
+              <input type='text' class='input' placeholder='Enter Course Name' name='courseName' />
             </div>
 
             <div class="mid-content">
@@ -113,10 +158,10 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class' required name='courseClass' />
+              <input type='text' class='input' placeholder='Enter Class' name='courseClass' />
             </div>
           </div>
-          <button class="btn">Submit</button>
+          <button class="btn" name='submit'>Submit</button>
         </div>
       </form>
 
@@ -133,6 +178,7 @@
           <table class="tables">
             <thead>
               <tr>
+                <th>SN.</th>
                 <th>ID</th>
                 <th>Course</th>
                 <th>Class</th>
@@ -143,15 +189,23 @@
 
             <tbody>
               <tr>
-                <td>29</td>
-                <td>Prabin Gautam</td>
-                <td>12</td>
+                <?php 
+                $sql = "SELECT * from course";
+                $result = mysqli_query($db, $sql);
+                while($row = mysqli_fetch_array($result)) {
+              ?>
+              <tr>
+                <td><?php echo $row['SN.'] ?></td>
+                <td><?php echo $row['courseId'] ?></td>
+                <td><?php echo $row['courseName'] ?></td>
+                <td><?php echo $row['courseClass'] ?></td>
                 <td>
                   <button class="btn-general btn-edit">Edit</button>
-                  <button class="btn-general btn-danger">Delete</button>
+                  <button class="btn-general btn-danger" name='del'>Delete</button>
                 </td>
               </tr>
             </tbody>
+            <?php } ?>
 
           </table>
         </div>
