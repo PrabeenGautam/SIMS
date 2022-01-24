@@ -39,6 +39,12 @@
           $success = 'Student Details Added Succesfully';
         }     
     } 
+
+    if(isset($_GET["del"])){
+      $id = $_GET['del'];
+      $del_sql = "DELETE FROM student where id = '$id'";
+      mysqli_query($db, $del_sql);
+    }
   }catch (Error $errorData) {
     $error = $errorData->getMessage();
   }
@@ -330,6 +336,7 @@
           </div>
           <div class="table-section">
             <table class="tables">
+              <h3>Only Show Last 8 Inserted</h3>
               <thead>
                 <tr>
                   <th>Roll No</th>
@@ -347,7 +354,7 @@
               <tbody>
                 <tr>
                   <?php 
-                    $sql = "SELECT * from student";
+                    $sql = "SELECT * from student ORDER BY id desc LIMIT 8";
                     $result = mysqli_query($db, $sql);
                     while($row = mysqli_fetch_array($result)) {
                   ?>
@@ -363,12 +370,16 @@
                   <td><?php echo $row['studentPhone'] ?></td>
                   <td><?php echo $row['studentEmail'] ?></td>
                   <td>
-                    <button class="btn-general btn-edit">Edit</button>
-                    <button class="btn-general btn-danger">Delete</button>
+                    <a name='edit' class="btn-general btn-edit"
+                      href="addstudent.php?edit=<?php echo $row['id'] ?>">Edit</a>
+                    <a name='del' class="btn-general btn-danger"
+                      href="addstudent.php?del=<?php echo $row['id'] ?>">Delete</a>
                   </td>
                 </tr>
               </tbody>
-              <?php } ?>
+              <?php 
+                } 
+            ?>
 
             </table>
           </div>
