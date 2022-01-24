@@ -37,6 +37,10 @@
   font: inherit;
 }
 
+.btn-general.custom {
+  margin-right: 20px;
+}
+
 .btn-general:hover {
   background-color: brown;
 }

@@ -1,6 +1,12 @@
 <?php
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
+
+  if(isset($_GET["del"])){
+      $id = $_GET['del'];
+      $del_sql = "DELETE FROM student where id = '$id'";
+      mysqli_query($db, $del_sql);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -109,8 +115,10 @@
                 <td><?php echo $row['studentPhone'] ?></td>
                 <td><?php echo $row['studentEmail'] ?></td>
                 <td>
-                  <button class="btn-general btn-edit">Edit</button>
-                  <button class="btn-general btn-danger">Delete</button>
+                  <a name='edit' class="btn-general btn-edit"
+                    href="viewstudents.php?edit=<?php echo $row['id'] ?>">Edit</a>
+                  <a name='del' class="btn-general btn-danger"
+                    href="viewstudents.php?del=<?php echo $row['id'] ?>">Delete</a>
                 </td>
               </tr>
             </tbody>

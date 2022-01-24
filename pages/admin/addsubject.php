@@ -27,9 +27,10 @@
         }     
     } 
 
-    if(isset($_POST['del'])) {
-      
-      // $sql_del = "Delete FROM student where id = 4";
+    if(isset($_GET["del"])){
+      $id = $_GET['del'];
+      $del_sql = "DELETE FROM course where id = '$id'";
+      mysqli_query($db, $del_sql);
     }
     
   }catch (Error $errorData) {
@@ -195,13 +196,16 @@
                 while($row = mysqli_fetch_array($result)) {
               ?>
               <tr>
-                <td><?php echo $row['SN.'] ?></td>
+                <td><?php echo $row['id'] ?></td>
                 <td><?php echo $row['courseId'] ?></td>
                 <td><?php echo $row['courseName'] ?></td>
                 <td><?php echo $row['courseClass'] ?></td>
                 <td>
-                  <button class="btn-general btn-edit">Edit</button>
-                  <button class="btn-general btn-danger" name='del'>Delete</button>
+                  <a name='edit' class="btn-general btn-edit custom"
+                    href="addsubject.php?edit=<?php echo $row['id'] ?>">Edit
+                  </a>
+                  <a name='del' class="btn-general btn-danger"
+                    href="addsubject.php?del=<?php echo $row['id'] ?>">Delete</a>
                 </td>
               </tr>
             </tbody>

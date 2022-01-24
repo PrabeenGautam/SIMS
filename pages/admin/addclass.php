@@ -28,6 +28,12 @@
           $success = 'Class ' . $className .  ' Added Succesfully with section ' . $sectionName;
         }     
     } 
+
+    if(isset($_GET["del"])){
+      $id = $_GET['del'];
+      $del_sql = "DELETE FROM classes where id = '$id'";
+      mysqli_query($db, $del_sql);
+    }
   }catch (Error $errorData) {
     $error = $errorData->getMessage();
   }
@@ -216,8 +222,9 @@
                 <td><?php echo $row['classCode'] ?></td>
                 <td><?php echo $row['classDescription'] ?></td>
                 <td>
-                  <button class="btn-general btn-edit">Edit</button>
-                  <button class="btn-general btn-danger">Delete</button>
+                  <a name='edit' class="btn-general btn-edit" href="addclass.php?edit=<?php echo $row['id'] ?>">Edit</a>
+                  <a name='del' class="btn-general btn-danger"
+                    href="addclass.php?del=<?php echo $row['id'] ?>">Delete</a>
                 </td>
               </tr>
             </tbody>
