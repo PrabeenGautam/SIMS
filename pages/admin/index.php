@@ -8,6 +8,14 @@
     
     $row = mysqli_fetch_array($result);
     $db_username = $row['username'];
+
+    //Counting ono of students
+    $studentCount = $userCount = $courseCount = $classCount = 0;
+
+    $studentCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from student"));
+    $classCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from classes"));
+    $courseCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from course"));
+    $userCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from login"));
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +81,7 @@
       <div class="cardelement">
         <div class='cards'>
           <div class='name-details'>
-            <div class='number'>199</div>
+            <div class='number'><?php echo $studentCount[0] ?></div>
             <div class='name'>Student</div>
           </div>
           <div class='card-icons'><i class="fas fa-user" style="color: #FFC36D"></i></div>
@@ -81,26 +89,26 @@
 
         <div class='cards'>
           <div class='name-details'>
-            <div class='number'>199</div>
+            <div class='number'><?php echo $classCount[0] ?></div>
             <div class='name'>Class</div>
           </div>
-          <div class='card-icons'><i class="fas fa-user-secret" style="color: #FF7676"></i></div>
+          <div class='card-icons'><i class="fas fa-code" style="color: #FF7676"></i></div>
         </div>
 
         <div class='cards'>
           <div class='name-details'>
-            <div class='number'>199</div>
+            <div class='number'><?php echo $courseCount[0] ?></div>
             <div class='name'>Subject</div>
           </div>
-          <div class='card-icons'><i class="fas fa-flag" style="color: #009DDC"></i></div>
+          <div class='card-icons'><i class="fas fa-file" style="color: #009DDC"></i></div>
         </div>
 
         <div class='cards'>
           <div class='name-details'>
-            <div class='number'>199</div>
+            <div class='number'><?php echo $userCount[0] ?></div>
             <div class='name'>Users</div>
           </div>
-          <div class='card-icons'><i class="fas fa-file" style="color: #27AE60"></i></div>
+          <div class='card-icons'><i class="fas fa-users" style="color: #27AE60"></i></div>
         </div>
       </div>
 

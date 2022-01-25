@@ -97,6 +97,12 @@
   grid-gap: 15px 40px;
 }
 
+.allinputfield-description {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px 40px;
+}
+
 .label-title {
   color: #81878c;
   margin-bottom: 10px;
@@ -136,6 +142,12 @@
 
 .custom-input {
   max-width: 29rem;
+}
+
+.custom-input-search {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0 40px;
 }
 
 .input:focus {

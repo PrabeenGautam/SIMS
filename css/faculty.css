@@ -17,7 +17,8 @@
   text-align: left;
 }
 
-.btn {
+.btn,
+.btn-outside {
   background-color: #4158d0;
   color: white;
   /* width: 9rem; */
@@ -25,8 +26,12 @@
   font-size: 20px;
   padding: 9px;
   transition: all 0.5s;
-  margin: 20px 0 0 40px;
+  cursor: pointer;
   border-radius: 8px;
+}
+
+.btn {
+  margin: 20px 0 0 40px;
 }
 
 .btn-general {
@@ -109,4 +114,11 @@ textarea {
 
 .welcome span {
   font-weight: bold;
+}
+
+.form-horizontal {
+  background-color: rgb(89, 28, 196);
+  color: white;
+  padding: 15px 20px;
+  font-size: inherit;
 }

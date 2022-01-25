@@ -39,6 +39,46 @@
 
 ?>
 
+<?php 
+
+try {
+    if(isset($_POST['import'])) {
+
+      $fileName = $_FILES['file']['tmp_name']; //Give name of the file 
+      $file_ext = $_FILES['file']['name'];
+      //Checking Extension of the file
+      $extension = pathinfo($file_ext, PATHINFO_EXTENSION);
+
+      if($extension == 'csv') {
+        if($_FILES['file']['size'] > 0) {
+          //Opening file into read mode
+          $file = fopen($fileName, "r");
+          while(($columnData = fgetcsv($file, 10000)) !== FALSE) {
+            if (isset($columnData[0]) && isset($columnData[1]) && isset($columnData[2])) {
+
+              $sql_insert = "INSERT INTO course (courseId, courseName, courseClass) 
+                                        VALUES ('$columnData[0]', '$columnData[1]', '$columnData[2]')";
+                                        
+              mysqli_query($db, $sql_insert); 
+              $successMsg = "CSV file has been imported successfully to database";
+            } else throw new Exception('Some values are empty. Recheck CSV Files');           
+          }
+          fclose($file);
+        }
+        else {
+          throw new Exception('File Size is 0: Error');
+        }
+      } else {
+        throw new Exception('Only CSV File Supported. Please import CSV Files');
+      }
+    }
+
+} catch (Exception $errorDataCSV) {
+  $errorMsg = $errorDataCSV->getMessage();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -97,6 +137,32 @@
     </section>
 
     <section class="grids">
+      <div class="success-div">
+        <?php if(isset($errorMsg)) {?>
+        <div class="message">
+          <?php echo $errorMsg; ?>
+        </div>
+        <?php
+                }?>
+      </div>
+      <div class="success-div">
+        <?php if(isset($successMsg)) {?>
+        <div class="success">
+          <?php echo $successMsg; ?>
+        </div>
+        <?php
+                }?>
+      </div>
+      <form class="form-horizontal" method="post" name="csvupload" id="csvupload" enctype="multipart/form-data">
+        <div class="input-row">
+          <label>Choose CSV
+            File</label> <input type="file" name="file" id="file" accept=".csv">
+          <button type="submit" id="submit" name="import" class="btn-general btn-edit">Import</button>
+          <br />
+
+        </div>
+
+      </form>
       <h3>Add Subjects</h3>
       <form method='POST'>
         <div class='card-section'>
@@ -123,7 +189,7 @@
             <?php
                 }?>
           </div>
-          <div class="content-section">
+          <div class="content-section allinputfield">
             <div class="mid-content">
 
               <!-- Heading  -->
