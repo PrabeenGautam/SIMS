@@ -2,10 +2,14 @@
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
 
-   $sessionEmail = $_SESSION['email'];
+  $sessionEmail = $_SESSION['email'];
+  $id = $_GET['id'];
+  $sql = "SELECT * FROM classes where id = $id";
+  $result = mysqli_query($db, $sql);
+  $getDataRow = mysqli_fetch_array($result);
    
   try{
-    if(isset($_POST['submit'])) {
+    if(isset($_POST['update'])) {
       $className = $_POST['className'];
       $sectionName = $_POST['sectionName'];
       $classCode = $_POST['classCode'];
@@ -19,21 +23,21 @@
           $sql = "SELECT * from classes";
           $result = mysqli_query($db, $sql);
           while($row = mysqli_fetch_array($result)) {           
-            if($className == $row['className'] && $sectionName == $row['classSection']) {
+            if($className == $row['className'] && $sectionName == $row['classSection'] && $classCode == $row['classCode'] && $classDescription == $row['classDescription']) {
               throw new Error('Class ' . $className . ' with section ' . $sectionName . ' Already Existed');
             } 
           }
-          $insertSQL = "INSERT INTO classes (className, classSection, classCode, classDescription) VALUES ('$className', '$sectionName', '$classCode', '$classDescription')";
-          mysqli_query($db, $insertSQL);
-          $success = 'Class ' . $className .  ' Added Succesfully with section ' . $sectionName;
+          $updateSQL = "UPDATE classes SET 
+            className = '$className', 
+            classSection = '$sectionName', 
+            classCode = '$classCode', 
+            classDescription = '$classDescription' where id = $id;
+            ";
+          mysqli_query($db, $updateSQL);
+          $success = 'Class Details Modified Successfully';
+          header('Refresh: 1');
         }     
     } 
-
-    if(isset($_GET["del"])){
-      $id = $_GET['del'];
-      $del_sql = "DELETE FROM classes where id = '$id'";
-      mysqli_query($db, $del_sql);
-    }
   }catch (Error $errorData) {
     $error = $errorData->getMessage();
   }
@@ -99,7 +103,7 @@
       </table>
     </section>
     <section class="grids">
-      <h3>Add Class Details</h3>
+      <h3>Update Class</h3>
 
       <form method='POST'>
 
@@ -108,7 +112,7 @@
             <span class='title-icon'>
               <i class="fas fa-plus"></i>
             </span>
-            <span class='title'>Add Class</span>
+            <span class='title'>Update Class Details</span>
           </div>
 
           <div class="error-div">
@@ -139,7 +143,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class' name='className' />
+              <input type='text' class='input' placeholder='Enter Class' name='className'
+                value='<?php echo $getDataRow['className'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -152,7 +157,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class' name='sectionName' />
+              <input type='text' class='input' placeholder='Enter Class' name='sectionName'
+                value='<?php echo $getDataRow['classSection'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -165,7 +171,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Class Code' name='classCode' />
+              <input type='text' class='input' placeholder='Enter Class Code' name='classCode'
+                value='<?php echo $getDataRow['classCode'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -179,61 +186,12 @@
 
               <!-- Input Field  -->
               <textarea rows='4' cols='50' name='classDescription' placeholder='Enter Description'
-                class='input textarea'></textarea>
+                class='input textarea'><?php echo $getDataRow['classDescription'] ?></textarea>
             </div>
           </div>
-          <button class="btn" name='submit'>Submit</button>
+          <button class="btn" name='update'>Update</button>
         </div>
       </form>
-
-      <div class='card-section'>
-        <div class='heading'>
-          <span class='title-icon'>
-            <i class="fas fa-plus"></i>
-          </span>
-          <span class='title'>View Subjects</span>
-        </div>
-
-
-        <div class="table-section">
-          <table class="tables">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Class Code</th>
-                <th>Description</th>
-                <th>Action</th>
-
-              </tr>
-            </thead>
-
-            <tbody>
-              <?php 
-                $sql = "SELECT * from classes";
-                $result = mysqli_query($db, $sql);
-                while($row = mysqli_fetch_array($result)) {
-              ?>
-              <tr>
-                <td><?php echo $row['id'] ?></td>
-                <td><?php echo $row['className'] ?></td>
-                <td><?php echo $row['classSection'] ?></td>
-                <td><?php echo $row['classCode'] ?></td>
-                <td><?php echo $row['classDescription'] ?></td>
-                <td>
-                  <a name='edit' class="btn-general btn-edit"
-                    href="updateclass.php?id=<?php echo $row['id'] ?>">Edit</a>
-                  <a name='del' class="btn-general btn-danger"
-                    href="addclass.php?del=<?php echo $row['id'] ?>">Delete</a>
-                </td>
-              </tr>
-            </tbody>
-            <?php } ?>
-
-          </table>
-        </div>
-      </div>
     </section>
   </div>
 </body>

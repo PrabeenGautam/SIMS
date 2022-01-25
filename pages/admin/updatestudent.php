@@ -3,7 +3,13 @@
   require_once('../../php/session.php'); 
 
   try{
-    if(isset($_POST['submit'])) {
+
+    $id = $_GET['id'];
+    $sql = "SELECT * FROM student where id = $id";
+    $result = mysqli_query($db, $sql);
+    $getDataRow = mysqli_fetch_array($result);
+
+    if(isset($_POST['update'])) {
       $studentFirstName = $_POST['studentFirstName'];
       $studentMiddleName = $_POST['studentMiddleName'];
       $studentLastName = $_POST['studentLastName'];
@@ -31,20 +37,27 @@
           $result = mysqli_query($db, $sql);
           while($row = mysqli_fetch_array($result)) {           
             if($studentEmail == $row['studentEmail'] && $studentClass== $row['studentClass'] && $studentSection == $row['studentSection']&& $studentRoll == $row['studentRoll'] && $studentFirstName == $row['studentRoll']) {
-              throw new Error('Stundet Details Already Existed');
+              throw new Error('Student Details Already Existed');
             } 
           }
-          $insertSQL = "INSERT INTO student (studentFirstName, studentMiddleName, studentLastName, gender, studentDOB, studentPhone, studentEmail, studentAddress, studentClass, studentSection, studentRoll) VALUES ('$studentFirstName', '$studentMiddleName', '$studentLastName', '$gender', '$studentDOB', '$studentPhone', '$studentEmail', '$studentAddress', '$studentClass', '$studentSection', '$studentRoll')";
-          mysqli_query($db, $insertSQL);
-          $success = 'Student Details Added Succesfully';
+          $updateSQL = "UPDATE student SET 
+              studentFirstName = '$studentFirstName', 
+              studentMiddleName = '$studentMiddleName', 
+              studentLastName = '$studentLastName', 
+              gender = '$gender', 
+              studentDOB = '$studentDOB', 
+              studentPhone = '$studentPhone', 
+              studentEmail = '$studentEmail', 
+              studentAddress = '$studentAddress', 
+              studentClass = '$studentClass', 
+              studentSection = '$studentSection', 
+              studentRoll = '$studentRoll' where id = $id
+            ";
+          mysqli_query($db, $updateSQL);                
+          $success = 'Student Details Updated Succesfully';
+          header('Refresh: 1');
         }     
     } 
-
-    if(isset($_GET["del"])){
-      $id = $_GET['del'];
-      $del_sql = "DELETE FROM student where id = '$id'";
-      mysqli_query($db, $del_sql);
-    }
   }catch (Error $errorData) {
     $error = $errorData->getMessage();
   }
@@ -111,14 +124,14 @@
       </table>
     </section>
     <section class="grids">
-      <h3>Add Student</h3>
+      <h3>Update Student</h3>
       <form method='POST'>
         <div class='card-section'>
           <div class='heading'>
             <span class='title-icon'>
               <i class="fas fa-plus"></i>
             </span>
-            <span class='title'>Add Students</span>
+            <span class='title'>Update Students Details</span>
           </div>
 
           <div class="error-div">
@@ -149,7 +162,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter First Name' name='studentFirstName' />
+              <input type='text' class='input' placeholder='Enter First Name' name='studentFirstName'
+                value='<?php echo $getDataRow['studentFirstName'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -162,7 +176,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Middle Name' name='studentMiddleName' />
+              <input type='text' class='input' placeholder='Enter Middle Name' name='studentMiddleName'
+                value='<?php echo $getDataRow['studentMiddleName'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -175,7 +190,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Last Name' name='studentLastName' />
+              <input type='text' class='input' placeholder='Enter Last Name' name='studentLastName'
+                value='<?php echo $getDataRow['studentLastName'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -188,11 +204,14 @@
               </div>
 
               <!-- Input Field  -->
-              <select name="gender" class='input'>
-                <option value="default" selected>--Select--</option>
-                <option value='male'>Male</option>
-                <option value='female'>Female</option>
-                <option value='other'>Other</option>
+              <select name="gender" class='input' value=' <?php echo $getDataRow['gender'] ?>'>
+                <option value="default">--Select--</option>
+                <option value='male' <?php echo ($getDataRow['gender'] == 'male' ? 'selected' : '') ?>>Male
+                </option>
+                <option value='female' <?php echo ($getDataRow['gender'] == 'female' ? 'selected' : '') ?>>Female
+                </option>
+                <option value='other' <?php echo ($getDataRow['gender'] == 'other' ? 'selected' : '') ?>>Other
+                </option>
               </select>
             </div>
 
@@ -206,7 +225,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='date' class='input' placeholder='Enter DOB' name='studentDOB' />
+              <input type='date' class='input' placeholder='Enter DOB' name='studentDOB'
+                value='<?php echo $getDataRow['studentDOB'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -219,7 +239,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='number' class='input' placeholder='Enter Phone number' name='studentPhone' />
+              <input type='number' class='input' placeholder='Enter Phone number' name='studentPhone'
+                value='<?php echo $getDataRow['studentPhone'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -232,7 +253,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='email' class='input' placeholder='Enter Email' name='studentEmail' />
+              <input type='email' class='input' placeholder='Enter Email' name='studentEmail'
+                value='<?php echo $getDataRow['studentEmail'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -245,7 +267,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Address' name='studentAddress' />
+              <input type='text' class='input' placeholder='Enter Address' name='studentAddress'
+                value='<?php echo $getDataRow['studentAddress'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -260,14 +283,15 @@
               <!-- Input Field  -->
               <!-- <input type='text' class='input' placeholder='Enter Student Class' name='studentClass' /> -->
               <select name="studentClass" class='input'>
-                <option value="default" selected>--Select--</option>
+                <option value="default">--Select--</option>
                 <?php
                     $sql = "SELECT distinct className from classes";
                     $result = mysqli_query($db, $sql);
                     while($row = mysqli_fetch_array($result)) {
                       
                 ?>
-                <option value='<?php echo $row['className'] ?>'>
+                <option value='<?php echo $row['className'] ?> '
+                  <?php echo ($getDataRow['studentClass'] == $row['className'] ? 'selected' : '') ?>>
                   <?php 
                     echo $row['className'];
                   ?>
@@ -296,7 +320,8 @@
                     while($row = mysqli_fetch_array($result)) {
                       
                 ?>
-                <option value='<?php echo $row['classSection'] ?>'>
+                <option value='<?php echo $row['classSection'] ?>'
+                  <?php echo ($getDataRow['studentSection'] == $row['classSection'] ? 'selected' : '') ?>>
                   <?php 
                     echo $row['classSection'];
                   ?>
@@ -316,84 +341,15 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Roll no' name='studentRoll' />
+              <input type='text' class='input' placeholder='Enter Roll no' name='studentRoll'
+                value='<?php echo $getDataRow['studentRoll'] ?>' />
             </div>
 
           </div>
-          <?php 
-              if(isset($_GET["edit"])){
-               echo  "<button class='btn' name='update'>Update</button> ";           
-              } else {
-               echo "<button class='btn' name='submit'>Submit</button>";
-              }
-          ?>
-
+          <button class='btn' name='update'>Update</button>
         </div>
       </form>
-
-
-
-      <div class="right-section">
-        <div class='card-section'>
-          <div class='heading'>
-            <span class='title-icon'>
-              <i class="fas fa-plus"></i>
-            </span>
-            <span class='title'>View Add Students</span>
-          </div>
-          <div class="table-section">
-            <table class="tables">
-              <h3>Only Show Last 8 Inserted</h3>
-              <thead>
-                <tr>
-                  <th>Roll No</th>
-                  <th>Full Name</th>
-                  <th>Gender</th>
-                  <th>Date of Birth</th>
-                  <th>Address</th>
-                  <th>Class</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <?php 
-                    $sql = "SELECT * from student ORDER BY id desc LIMIT 8";
-                    $result = mysqli_query($db, $sql);
-                    while($row = mysqli_fetch_array($result)) {
-                  ?>
-                <tr>
-                  <td><?php echo $row['studentRoll'] ?></td>
-                  <td>
-                    <?php echo $row['studentFirstName'] . ' '. $row['studentMiddleName']. ' '. $row['studentLastName'] ?>
-                  </td>
-                  <td><?php echo $row['gender'] ?></td>
-                  <td><?php echo $row['studentDOB'] ?></td>
-                  <td><?php echo $row['studentAddress'] ?></td>
-                  <td><?php echo $row['studentClass'] . ' '. $row['studentSection'] ?></td>
-                  <td><?php echo $row['studentPhone'] ?></td>
-                  <td><?php echo $row['studentEmail'] ?></td>
-                  <td>
-                    <a name='edit' class="btn-general btn-edit"
-                      href="updatestudent.php?id=<?php echo $row['id'] ?>">Edit</a>
-                    <a name='del' class="btn-general btn-danger"
-                      href="addstudent.php?del=<?php echo $row['id'] ?>">Delete</a>
-                  </td>
-                </tr>
-              </tbody>
-              <?php 
-                } 
-            ?>
-
-            </table>
-          </div>
-        </div>
-      </div>
     </section>
-
   </div>
 </body>
 

@@ -116,7 +116,7 @@
                 <td><?php echo $row['studentEmail'] ?></td>
                 <td>
                   <a name='edit' class="btn-general btn-edit"
-                    href="viewstudents.php?edit=<?php echo $row['id'] ?>">Edit</a>
+                    href="updatestudent.php?id=<?php echo $row['id'] ?>">Edit</a>
                   <a name='del' class="btn-general btn-danger"
                     href="viewstudents.php?del=<?php echo $row['id'] ?>">Delete</a>
                 </td>

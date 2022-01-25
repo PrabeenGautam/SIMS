@@ -3,6 +3,10 @@
   require_once('../../php/session.php'); 
 
   $sessionEmail = $_SESSION['email'];
+  $id = $_GET['id'];
+  $sql = "SELECT * FROM course where id = $id";
+  $result = mysqli_query($db, $sql);
+  $getDataRow = mysqli_fetch_array($result);
    
   try{
     if(isset($_POST['submit'])) {
@@ -17,21 +21,19 @@
           $sql = "SELECT * from course";
           $result = mysqli_query($db, $sql);
           while($row = mysqli_fetch_array($result)) {           
-            if($courseID == $row['courseId']) {
+            if($courseID == $row['courseId'] && $courseName == $row['courseName'] && $courseClass== $row['courseClass']) {
               throw new Error('CourseId ' . $courseID . ' Already Existed');
             } 
           }
-          $insertSQL = "INSERT INTO course (courseId, courseName, courseClass) VALUES ('$courseID', '$courseName', '$courseClass')";
-          mysqli_query($db, $insertSQL);
-          $success = 'Course ' . $courseName .  ' Added Succesfully with Course Id  ' . $courseID;
+          $updateSQL = "UPDATE course SET
+                courseId = '$courseID', 
+                courseName = '$courseName', 
+                courseClass = '$courseClass' WHERE id = $id";
+          mysqli_query($db, $updateSQL);
+          $success = 'Course Modified Successfully';
+          header('Refresh: 1');
         }     
     } 
-
-    if(isset($_GET["del"])){
-      $id = $_GET['del'];
-      $del_sql = "DELETE FROM course where id = '$id'";
-      mysqli_query($db, $del_sql);
-    }
     
   }catch (Error $errorData) {
     $error = $errorData->getMessage();
@@ -97,14 +99,14 @@
     </section>
 
     <section class="grids">
-      <h3>Add Subjects</h3>
+      <h3>Update Subjects</h3>
       <form method='POST'>
         <div class='card-section'>
           <div class='heading'>
             <span class='title-icon'>
               <i class="fas fa-plus"></i>
             </span>
-            <span class='title'>Add Subjects</span>
+            <span class='title'>Update Subjects Details</span>
           </div>
 
           <div class="error-div">
@@ -134,7 +136,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Course Id' name='courseId' />
+              <input type='text' class='input' placeholder='Enter Course Id' name='courseId'
+                value='<?php echo $getDataRow['courseId'] ?>' />
             </div>
             <div class="mid-content">
 
@@ -146,7 +149,8 @@
               </div>
 
               <!-- Input Field  -->
-              <input type='text' class='input' placeholder='Enter Course Name' name='courseName' />
+              <input type='text' class='input' placeholder='Enter Course Name' name='courseName'
+                value='<?php echo $getDataRow['courseName'] ?>' />
             </div>
 
             <div class="mid-content">
@@ -159,16 +163,16 @@
               </div>
 
               <!-- Input Field  -->
-              <!-- <input type='text' class='input' placeholder='Enter Class' name='courseClass' /> -->
               <select name="courseClass" class='input'>
-                <option value="default" selected>--Select--</option>
+                <option value="default">--Select--</option>
                 <?php
                     $sql = "SELECT distinct className from classes";
                     $result = mysqli_query($db, $sql);
                     while($row = mysqli_fetch_array($result)) {
                       
                 ?>
-                <option value='<?php echo $row['className'] ?>'>
+                <option value='<?php echo $row['className'] ?> '
+                  <?php echo ($getDataRow['courseClass'] == $row['className'] ? 'selected' : '') ?>>
                   <?php 
                     echo $row['className'];
                   ?>
@@ -181,54 +185,6 @@
           <button class="btn" name='submit'>Submit</button>
         </div>
       </form>
-
-      <div class='card-section'>
-        <div class='heading'>
-          <span class='title-icon'>
-            <i class="fas fa-plus"></i>
-          </span>
-          <span class='title'>View Subjects</span>
-        </div>
-
-
-        <div class="table-section">
-          <table class="tables">
-            <thead>
-              <tr>
-                <th>SN.</th>
-                <th>ID</th>
-                <th>Course</th>
-                <th>Class</th>
-                <th>Action</th>
-
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <?php 
-                $sql = "SELECT * from course";
-                $result = mysqli_query($db, $sql);
-                while($row = mysqli_fetch_array($result)) {
-              ?>
-              <tr>
-                <td><?php echo $row['id'] ?></td>
-                <td><?php echo $row['courseId'] ?></td>
-                <td><?php echo $row['courseName'] ?></td>
-                <td><?php echo $row['courseClass'] ?></td>
-                <td>
-                  <a name='edit' class="btn-general btn-edit custom"
-                    href="updatesubjects.php?id=<?php echo $row['id'] ?>">Edit
-                  </a>
-                  <a name='del' class="btn-general btn-danger"
-                    href="addsubject.php?del=<?php echo $row['id'] ?>">Delete</a>
-                </td>
-              </tr>
-            </tbody>
-            <?php } ?>
-
-          </table>
-        </div>
     </section>
   </div>
 </body>
