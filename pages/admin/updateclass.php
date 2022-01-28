@@ -51,7 +51,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>College Management System</title>
+  <title>Student Info Management</title>
   <link rel="stylesheet" href="../../css/sharedsb.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />

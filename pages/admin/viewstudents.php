@@ -1,47 +1,49 @@
 <?php
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
-try {
-  if(isset($_GET["del"])){
-      $id = $_GET['del'];
-      $del_sql = "DELETE FROM student where id = '$id'";
-      mysqli_query($db, $del_sql);
+
+
+  try {
+    if(isset($_GET["del"])){
+        $id = $_GET['del'];
+        $del_sql = "DELETE FROM student where id = '$id'";
+        mysqli_query($db, $del_sql);
+      }
+
+    if(isset($_POST["search"])) {
+      $firstname = $_POST['searchFirstName'];
+      $lastname = $_POST['searchLastName'];
+      $class = $_POST['searchClass'];
+      $roll = $_POST['searchRoll'];
+      $gender = $_POST['searchGender'];
+      $section = $_POST['searchSection'];
+      $address = $_POST['searchAddress'];
+
+      //  if(empty($firstname) || empty($lastname) || empty($class) || empty($roll)) {
+      //   throw new Exception('Choose any field to search');
+      //   exit();
+      // } 
+      
+      $q = "SELECT * from student WHERE 1 = 1 ";
+      if(isset($firstname) && !empty($firstname)) $q = $q . " AND studentFirstName = '$firstname'";
+      if(isset($lastname) && !empty($lastname)) $q = $q . " AND studentLastName = '$lastname'";
+      if(isset($class) && !empty($class)) $q = $q . " AND studentClass = '$class'";
+      if(isset($roll) && !empty($roll)) $q = $q . " AND studentRoll = '$roll'";
+      if(isset($gender) && !empty($gender)) $q = $q . " AND gender = '$gender'";
+      if(isset($section) && !empty($section)) $q = $q . " AND studentSection = '$section'";
+      if(isset($address) && !empty($address)) $q = $q . " AND studentAddress = '$address'";
+
+      $result = mysqli_query($db, $q);
+      if(mysqli_num_rows($result) == 0) {
+        throw new Exception('Results not found. Try Using another Keyword');
+      }
+      
     }
-
-  if(isset($_POST["search"])) {
-    $firstname = $_POST['searchFirstName'];
-    $lastname = $_POST['searchLastName'];
-    $class = $_POST['searchClass'];
-    $roll = $_POST['searchRoll'];
-    $gender = $_POST['searchGender'];
-    $section = $_POST['searchSection'];
-    $address = $_POST['searchAddress'];
-
-    //  if(empty($firstname) || empty($lastname) || empty($class) || empty($roll)) {
-    //   throw new Exception('Choose any field to search');
-    //   exit();
-    // } 
-    
-    $q = "SELECT * from student WHERE 1 = 1 ";
-    if(isset($firstname) && !empty($firstname)) $q = $q . " AND studentFirstName = '$firstname'";
-    if(isset($lastname) && !empty($lastname)) $q = $q . " AND studentLastName = '$lastname'";
-    if(isset($class) && !empty($class)) $q = $q . " AND studentClass = '$class'";
-    if(isset($roll) && !empty($roll)) $q = $q . " AND studentRoll = '$roll'";
-    if(isset($gender) && !empty($gender)) $q = $q . " AND gender = '$gender'";
-    if(isset($section) && !empty($section)) $q = $q . " AND studentSection = '$section'";
-    if(isset($address) && !empty($address)) $q = $q . " AND studentAddress = '$address'";
-
-    $result = mysqli_query($db, $q);
-    if(mysqli_num_rows($result) == 0) {
-      throw new Exception('Results not found. Try Using another Keyword');
-    }
-    
+  } catch (Exception $errorData) {
+    $error = $errorData->getMessage();
   }
-} catch (Exception $errorData) {
-  $error = $errorData->getMessage();
-}
-  
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,11 +52,11 @@ try {
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>College Management System</title>
   <link rel="stylesheet" href="../../css/sharedsb.css" />
   <link rel="stylesheet" href="../../icons/all.css" />
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
   <link rel="stylesheet" href="../../css/faculty.css" />
+  <title>Student Info Management</title>
 </head>
 
 <body>
@@ -101,14 +103,13 @@ try {
 
     <section class="grids">
       <h3>Search Students</h3>
-
       <form method="POST">
-        <div class='card-section'>
-          <div class='heading'>
-            <span class='title-icon'>
+        <div class="card-section">
+          <div class="heading">
+            <span class="title-icon">
               <i class="fas fa-search"></i>
             </span>
-            <span class='title'>Search Students</span>
+            <span class="title">Search Students</span>
           </div>
           <div class="error-div">
             <?php if(isset($error)) {?>
@@ -133,77 +134,77 @@ try {
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>First Name</label>
+                  <label class="mid-title">First Name</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by First Name' name='searchFirstName' />
+                <input type="search" class="input" placeholder="Search by First Name" name="searchFirstName" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Last Name</label>
+                  <label class="mid-title">Last Name</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Last Name' name='searchLastName' />
+                <input type="search" class="input" placeholder="Search by Last Name" name="searchLastName" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Class</label>
+                  <label class="mid-title">Class</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Class' name='searchClass' />
+                <input type="search" class="input" placeholder="Search by Class" name="searchClass" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Roll No</label>
+                  <label class="mid-title">Roll No</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Roll no' name='searchRoll' />
+                <input type="search" class="input" placeholder="Search by Roll no" name="searchRoll" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Gender</label>
+                  <label class="mid-title">Gender</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Gender' name='searchGender' />
+                <input type="search" class="input" placeholder="Search by Gender" name="searchGender" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Address</label>
+                  <label class="mid-title">Address</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Address' name='searchAddress' />
+                <input type="search" class="input" placeholder="Search by Address" name="searchAddress" />
               </div>
 
               <div class="mid-content">
                 <!-- Heading  -->
                 <div class="label-title">
                   <i class="fas fa-user mid-icon"></i>
-                  <label class='mid-title'>Section</label>
+                  <label class="mid-title">Section</label>
                 </div>
 
                 <!-- Input Field  -->
-                <input type='search' class='input' placeholder='Search by Section' name='searchSection' />
+                <input type="search" class="input" placeholder="Search by Section" name="searchSection" />
               </div>
             </div>
           </div>
@@ -211,14 +212,13 @@ try {
         <button class="btn-outside" name="search">Search</button>
       </form>
 
-      <div class='card-section'>
-        <div class='heading'>
-          <span class='title-icon'>
+      <div class="card-section">
+        <div class="heading">
+          <span class="title-icon">
             <i class="fas fa-plus"></i>
           </span>
-          <span class='title'>View Students</span>
+          <span class="title">View Students</span>
         </div>
-
 
         <div class="table-section">
           <table class="tables">
@@ -245,6 +245,8 @@ try {
                     }
                     while($row = mysqli_fetch_array($result)) {
                   ?>
+              </tr>
+
               <tr>
                 <td><?php echo $row['studentRoll'] ?></td>
                 <td>
@@ -253,13 +255,15 @@ try {
                 <td><?php echo $row['gender'] ?></td>
                 <td><?php echo $row['studentDOB'] ?></td>
                 <td><?php echo $row['studentAddress'] ?></td>
-                <td><?php echo $row['studentClass'] . ' '. $row['studentSection'] ?></td>
+                <td>
+                  <?php echo $row['studentClass'] . ' '. $row['studentSection'] ?>
+                </td>
                 <td><?php echo $row['studentPhone'] ?></td>
                 <td><?php echo $row['studentEmail'] ?></td>
                 <td>
-                  <a name='edit' class="btn-general btn-edit"
+                  <a name="edit" class="btn-general btn-edit"
                     href="updatestudent.php?id=<?php echo $row['id'] ?>">Edit</a>
-                  <a name='del' class="btn-general btn-danger"
+                  <a name="del" class="btn-general btn-danger"
                     href="viewstudents.php?del=<?php echo $row['id'] ?>">Delete</a>
                 </td>
               </tr>
@@ -269,8 +273,6 @@ try {
           </table>
         </div>
       </div>
-
-
     </section>
   </div>
 </body>
