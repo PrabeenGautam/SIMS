@@ -7,11 +7,11 @@
     $result = mysqli_query($db, $sql);
     
     $row = mysqli_fetch_array($result);
+
     $db_username = $row['username'];
 
     //Counting ono of students
     $studentCount = $userCount = $courseCount = $classCount = 0;
-
     $studentCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from student"));
     $classCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from classes"));
     $courseCount = mysqli_fetch_row(mysqli_query($db, "SELECT distinct COUNT(*) from course"));
