@@ -2,6 +2,8 @@
   require_once('../../php/config.php'); 
   require_once('../../php/session.php'); 
 
+  $q = "SELECT * FROM student WHERE 1 = 1";
+  $result = mysqli_query($db, $q);
 
   try {
     if(isset($_GET["del"])){
@@ -9,6 +11,10 @@
         $del_sql = "DELETE FROM student where id = '$id'";
         mysqli_query($db, $del_sql);
       }
+
+     if(isset($_POST["search"])) {
+       $q = "SELECT * FROM student WHERE 1 = 1";
+     }
 
     if(isset($_POST["search"])) {
       $firstname = $_POST['searchFirstName'];
@@ -19,25 +25,63 @@
       $section = $_POST['searchSection'];
       $address = $_POST['searchAddress'];
 
-      //  if(empty($firstname) || empty($lastname) || empty($class) || empty($roll)) {
-      //   throw new Exception('Choose any field to search');
-      //   exit();
-      // } 
-      
-      $q = "SELECT * from student WHERE 1 = 1 ";
-      if(isset($firstname) && !empty($firstname)) $q = $q . " AND studentFirstName = '$firstname'";
-      if(isset($lastname) && !empty($lastname)) $q = $q . " AND studentLastName = '$lastname'";
-      if(isset($class) && !empty($class)) $q = $q . " AND studentClass = '$class'";
+       if(empty($firstname) && empty($lastname) && empty($class) && empty($roll) && empty($gender) && empty($section) && empty($address)) {
+        throw new Exception('Choose any field to search');
+        exit();
+      } 
+  
+      if(isset($firstname) && !empty($firstname)) $q = $q . " AND studentFirstName LIKE '$firstname%'";
+      if(isset($lastname) && !empty($lastname)) $q = $q . " AND studentLastName LIKE '%$lastname'";
+      if(isset($class) && empty($section) && !empty($class)) {
+        $calculateCount = mysqli_fetch_row(mysqli_query($db, "SELECT COUNT(*) from classes WHERE className = $class"));
+        $result = mysqli_query($db, "SELECT id from classes WHERE className = $class");
+        $count = $calculateCount[0];
+        
+        $q = $q . " AND (";
+        while($row = mysqli_fetch_array($result)) {
+          if($count != 1) {
+              $q = $q . "classId = $row[0] OR ";
+              $count--;
+          } else $q = $q . "classId = $row[0]) ";
+        }
+      }
+
+      if(isset($section) && empty($class) && !empty($section)) {
+        $calculateCount = mysqli_fetch_row(mysqli_query($db, "SELECT COUNT(*) from classes WHERE classSection = '$section'"));
+        $result = mysqli_query($db, "SELECT id from classes WHERE classSection = '$section'");
+        $count = $calculateCount[0];
+        $q = $q . " AND (";
+        while($row = mysqli_fetch_array($result)) {
+          if($count != 1) {
+              $q = $q . "classId = $row[0] OR ";
+              $count--;
+          } else $q = $q . "classId = $row[0])";
+        }
+      }
+
+      if(isset($section) && !empty($class) && !empty($section)) {
+        $calculateCount = mysqli_fetch_row(mysqli_query($db, "SELECT COUNT(*) from classes WHERE classSection = '$section' AND className = $class"));
+        $result = mysqli_query($db, "SELECT id from classes WHERE classSection = '$section'  AND className = $class");
+        $count = $calculateCount[0];
+        $q = $q . " AND (";
+        while($row = mysqli_fetch_array($result)) {
+          if($count != 1) {
+              $q = $q . "classId = $row[0] OR ";
+              $count--;
+          } else $q = $q . "classId = $row[0])";
+        }
+      }
+
       if(isset($roll) && !empty($roll)) $q = $q . " AND studentRoll = '$roll'";
       if(isset($gender) && !empty($gender)) $q = $q . " AND gender = '$gender'";
-      if(isset($section) && !empty($section)) $q = $q . " AND studentSection = '$section'";
-      if(isset($address) && !empty($address)) $q = $q . " AND studentAddress = '$address'";
+      if(isset($address) && !empty($address)) $q = $q . " AND studentAddress LIKE '%$address%'";
+
 
       $result = mysqli_query($db, $q);
       if(mysqli_num_rows($result) == 0) {
         throw new Exception('Results not found. Try Using another Keyword');
       }
-      
+    
     }
   } catch (Exception $errorData) {
     $error = $errorData->getMessage();
@@ -57,6 +101,10 @@
   <link rel="stylesheet" href="../../css/sharedgrid.css" />
   <link rel="stylesheet" href="../../css/faculty.css" />
   <title>Student Info Management</title>
+
+  <script>
+
+  </script>
 </head>
 
 <body>
@@ -129,6 +177,7 @@
           </div>
           <div class="content-section">
             <h3>You can Search Using Any Input Field Given Below</h3>
+            <?php echo $q; ?>
             <div class="allinputfield">
               <div class="mid-content">
                 <!-- Heading  -->
@@ -210,6 +259,7 @@
           </div>
         </div>
         <button class="btn-outside" name="search">Search</button>
+        <button class="btn-outside" name="reset">Reset Search</button>
       </form>
 
       <div class="card-section">
@@ -239,11 +289,13 @@
             <tbody>
               <tr>
                 <?php 
-                    if(!isset($_POST['search'])) {
-                      $sql = "SELECT * from student";
-                      $result = mysqli_query($db, $sql);
-                    }
-                    while($row = mysqli_fetch_array($result)) {
+               
+                    while($row = mysqli_fetch_array($result)) {  
+                      $classId = $row['classId'];         
+                      $sql_foreign = "SELECT className, classSection FROM classes WHERE id = $classId";
+                      $result_class = mysqli_query($db, $sql_foreign);
+                      $fetchRow = mysqli_fetch_row($result_class);
+
                   ?>
               </tr>
 
@@ -256,7 +308,7 @@
                 <td><?php echo $row['studentDOB'] ?></td>
                 <td><?php echo $row['studentAddress'] ?></td>
                 <td>
-                  <?php echo $row['studentClass'] . ' '. $row['studentSection'] ?>
+                  <?php echo  $fetchRow[0] . ' '. $fetchRow[1] ?>
                 </td>
                 <td><?php echo $row['studentPhone'] ?></td>
                 <td><?php echo $row['studentEmail'] ?></td>
