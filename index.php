@@ -6,12 +6,10 @@
 
   $email = $password = '';
 
-  
-  // $_SERVER["REQUEST_METHOD" =>If post request send then do it
   //isset => if submit is clicked 
 
   try {
-  
+
     if(isset($_POST['submit'])) {
     $enteredEmail = $_POST["email"];
     $enteredPassword = $_POST["password"];
@@ -27,8 +25,7 @@
 
       if(mysqli_num_rows($result)) {
         $success=  'Logging in...';   
-        $_SESSION['email'] = $enteredEmail; 
-        sleep(2);
+        $_SESSION['email'] = $enteredEmail;       
         header("location: ./pages/admin/index.php");
       } else {
         $error = 'Incorrect Email or Password';

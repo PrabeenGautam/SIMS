@@ -1,7 +1,7 @@
 <?php
    define('DB_SERVER', 'localhost');
    define('DB_USERNAME', 'root');
-   define('DB_PASSWORD', '');
+   define('DB_PASSWORD', '123456789');
    define('DB_DATABASE', 'sims');
 
    //Connect to Mysql database
