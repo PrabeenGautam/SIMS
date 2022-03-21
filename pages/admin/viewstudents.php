@@ -291,10 +291,7 @@
                 <?php 
                
                     while($row = mysqli_fetch_array($result)) {  
-                      $classId = $row['classId'];         
-                      $sql_foreign = "SELECT className, classSection FROM classes WHERE id = $classId";
-                      $result_class = mysqli_query($db, $sql_foreign);
-                      $fetchRow = mysqli_fetch_row($result_class);
+                    
 
                   ?>
               </tr>
@@ -308,7 +305,7 @@
                 <td><?php echo $row['studentDOB'] ?></td>
                 <td><?php echo $row['studentAddress'] ?></td>
                 <td>
-                  <?php echo  $fetchRow[0] . ' '. $fetchRow[1] ?>
+                  <?php echo  $row['studentClass'] . ' '. $row['studentSection'] ?>
                 </td>
                 <td><?php echo $row['studentPhone'] ?></td>
                 <td><?php echo $row['studentEmail'] ?></td>

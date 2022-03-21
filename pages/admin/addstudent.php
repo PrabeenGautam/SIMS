@@ -66,7 +66,7 @@ try {
           //Opening file into read mode
           $file = fopen($fileName, "r");
           while(($columnData = fgetcsv($file, 10000)) !== FALSE) {
-            if (isset($columnData[0]) && isset($columnData[1]) && isset($columnData[2]) && isset($columnData[3]) && isset($columnData[4]) && isset($columnData[5]) && isset($columnData[6]) && isset($columnData[7]) && isset($columnData[8]) && isset($columnData[9]) && isset($columnData[10])) {
+            if (isset($columnData[0]) && isset($columnData[2]) && isset($columnData[3]) && isset($columnData[4]) && isset($columnData[5]) && isset($columnData[6]) && isset($columnData[7]) && isset($columnData[8]) && isset($columnData[9]) && isset($columnData[10])) {
               $sql_insert = "INSERT INTO 
                             student (studentFirstName, studentMiddleName, studentLastName, gender, studentDOB, studentPhone, studentEmail, studentAddress, studentClass, studentSection, studentRoll) 
                             
